@@ -1,6 +1,8 @@
 const express = require("express")
 const server = express()
 
+
+// "start": "node src/server.js"
 //pega o db
 const db = require("./database/db.js")
 
@@ -19,7 +21,15 @@ nunjucks.configure("src/views", {
 
 //caminhos
 server.get("/", (req, res) => {
-    return res.render("index.html", { title: "Um título" })
+
+    console.log(req.query)
+    db.all(`SELECT city FROM places`, function(err, cities){
+        if(err){
+            return console.log(err)
+        }
+
+        return res.render("index.html", {cities:cities})
+    })
 })
 
 server.get("/create-point", (req, res) => {
